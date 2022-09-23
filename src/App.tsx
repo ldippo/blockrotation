@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useMemo } from "react";
 import { motion, useAnimationControls } from "framer-motion";
 import "./styles.css";
 
@@ -9,30 +9,56 @@ import "./styles.css";
 // Animation includes scaleXY 1 -> 1.25 -> 1
 // Animation includes base - 30 -> base -> base + 30 -> base
 
-let baseAngle = 0;
+// let baseAngle = 0;
+const createFilter = (angle: number) => `hue-rotate(${angle}deg)`;
+const arr = new Array(9).fill(null);
 export default function App() {
   const controls = useAnimationControls();
+  let baseAngle = React.useRef(0);
 
   React.useEffect(() => {
     const int = setInterval(() => {
-      const angles = [baseAngle - 30, baseAngle, baseAngle + 30, baseAngle];
+      const angles = [
+        baseAngle.current - 30,
+        baseAngle.current,
+        baseAngle.current + 30,
+        baseAngle.current
+      ];
       const scale = [1, 1.25, 1];
       controls.start({
         rotate: angles,
         scale,
         transition: {
           duration: 1
-        }
+        },
+        filter: createFilter(baseAngle.current)
       });
-      baseAngle += 30;
+      baseAngle.current += 30;
     }, 1000);
     return () => clearInterval(int);
   }, [controls]);
 
   return (
-    <motion.div
-      animate={controls}
-      style={{ backgroundColor: "red", width: 100, height: 100, margin: 200 }}
-    />
+    <div className="grid-container">
+      {arr.map((c, idx) => (
+        <div
+          style={{
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center"
+          }}
+        >
+          <motion.div
+            key={idx}
+            animate={controls}
+            style={{
+              backgroundColor: "red",
+              width: 100,
+              height: 100
+            }}
+          />
+        </div>
+      ))}
+    </div>
   );
 }

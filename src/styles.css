@@ -1,4 +1,19 @@
 .App {
   font-family: sans-serif;
+  display: flex;
   text-align: center;
+  align-items: center;
+  justify-content: center;
+  padding: 300px;
+}
+
+.grid-container {
+  display: grid;
+  grid-template-columns: auto auto auto;
+  grid-template-rows: auto auto auto;
+  width: 100vw;
+  height: 100vh;
+  grid-gap: 100px;
+
+  /* grid-gap: 3rem; */
 }
